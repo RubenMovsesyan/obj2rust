@@ -64,7 +64,7 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
             // face
             "f" => {
                 // Assuming triangulated
-                for vertex_info in line_split[1..3].iter() {
+                for vertex_info in line_split[1..=3].iter() {
                     let vertex_info_split = vertex_info.split('/').collect::<Vec<_>>();
 
                     // Get the indices of each vertex, uv, and normal for the face
