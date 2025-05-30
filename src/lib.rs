@@ -23,7 +23,7 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
     let mut normals: Vec<[f32; 3]> = Vec::new();
     let mut uv_coords: Vec<[f32; 2]> = Vec::new();
 
-    let mut model_vertices: Vec<Vertex> = Vec::new();
+    let mut model_vertices: Vec<(f32, f32, f32)> = Vec::new();
 
     let mut indices: Vec<u32> = Vec::new();
 
@@ -74,11 +74,12 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
                         vertex_info_split[2].parse::<usize>().unwrap() - 1,
                     );
 
-                    model_vertices.push(Vertex {
-                        position: vertices[vertex_index],
-                        normal: normals[normal_index],
-                        uv: uv_coords[uv_index],
-                    });
+                    // model_vertices.push(Vertex {
+                    //     position: vertices[vertex_index],
+                    //     normal: normals[normal_index],
+                    //     uv: uv_coords[uv_index],
+                    // });
+                    model_vertices.push(vertices[vertex_index].into());
 
                     indices.push(vertex_index as u32);
                 }
@@ -88,14 +89,15 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
     }
 
     let vertex_tokens = model_vertices
-        .iter()
+        .into_iter()
         .map(|vertex| {
-            let position = &vertex.position;
-            let normal = &vertex.normal;
-            let uv = &vertex.uv;
+            // let position = &vertex.position;
+            // let normal = &vertex.normal;
+            // let uv = &vertex.uv;
+            let (x, y, z) = vertex;
 
             quote! {
-                (#(#position),*, #(#normal),*, #(#uv),*)
+                (#x, #y, #z)
             }
         })
         .collect::<Vec<_>>();
