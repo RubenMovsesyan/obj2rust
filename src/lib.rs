@@ -19,7 +19,7 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
     let file_path = manifest_path.with_file_name(file_name);
     let lines = read_lines(file_path).unwrap();
 
-    let mut vertices: Vec<[f32; 3]> = Vec::new();
+    let mut vertices: Vec<(f32, f32, f32)> = Vec::new();
     let mut normals: Vec<[f32; 3]> = Vec::new();
     let mut uv_coords: Vec<[f32; 2]> = Vec::new();
 
@@ -40,11 +40,11 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
             }
             // Vertex position
             "v" => {
-                vertices.push([
+                vertices.push((
                     line_split[1].parse::<f32>().unwrap(),
                     line_split[2].parse::<f32>().unwrap(),
                     line_split[3].parse::<f32>().unwrap(),
-                ]);
+                ));
             }
             // UV Coordinate
             "vt" => {
@@ -88,7 +88,7 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
         }
     }
 
-    let vertex_tokens = model_vertices
+    let vertex_tokens = vertices
         .into_iter()
         .map(|vertex| {
             // let position = &vertex.position;
