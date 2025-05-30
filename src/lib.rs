@@ -80,7 +80,7 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
                         uv: uv_coords[uv_index],
                     });
 
-                    indices.push(model_vertices.len() as u32 - 1);
+                    indices.push(vertex_index as u32);
                 }
             }
             _ => {}
