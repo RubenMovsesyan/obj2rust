@@ -1,5 +1,7 @@
 [package]
 name = "obj_2_rust"
+description = "Macro to bring an obj file into rust"
+license = "MIT"
 version = "0.1.0"
 edition = "2024"
 
