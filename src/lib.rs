@@ -14,11 +14,9 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as LitStr);
     let file_name = input.value();
 
-    // let manifest_path = env::var("CARGO_MANIFEST_DIR").unwrap();
     let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     let manifest_path = Path::new(&manifest_dir);
     let file_path = manifest_path.with_file_name(file_name);
-    dbg!(&file_path);
     let lines = read_lines(file_path).unwrap();
 
     let mut vertices: Vec<[f32; 3]> = Vec::new();
@@ -113,13 +111,11 @@ pub fn obj_2_rust(input: TokenStream) -> TokenStream {
         })
         .collect::<Vec<_>>();
 
-    // dbg!(vertex_tokens);
+    let size = index_tokens.len();
 
-    // TokenStream::new()
     let combined = quote! {
-        ([#(#vertex_tokens),*], [#(#index_tokens),*])
+        ([#(#vertex_tokens),*], [#(#index_tokens),*], #size)
     };
 
-    // TokenStream::new()
     combined.into()
 }
